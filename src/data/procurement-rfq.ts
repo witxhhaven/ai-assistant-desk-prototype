@@ -16,16 +16,12 @@ export const procurementRfqData = {
       content: [
         {
           type: "thinking" as const,
-          thought: "Analyzing procurement request for creative software...",
-          reasoning: [
-            "Understanding user's request to create RFQ for creative software...",
-            "Identifying procurement type: software licenses for team...",
-            "Loading relevant RFQ templates and government procurement guidelines...",
-            "Checking vendor database for qualified creative software suppliers...",
-            "Preparing standardized quotation request form...",
-            "Setting up compliance requirements and evaluation criteria..."
+          thoughts: [
+            "Understanding procurement request...",
+            "Preparing RFQ template...",
+            "Checking procurement guidelines..."
           ],
-          timingMs: 3500
+          timingMs: 1200
         },
         {
           type: "text" as const,
@@ -158,16 +154,12 @@ export const procurementRfqData = {
       content: [
         {
           type: "thinking" as const,
-          thought: "Processing RFQ submission and generating vendor quotations...",
-          reasoning: [
-            "Analyzing submitted RFQ details from the form...",
-            "Validating procurement requirements and budget allocation...",
-            "Querying vendor database for qualified creative software suppliers...",
-            "Generating quotation requests to 3 pre-qualified vendors...",
-            "Receiving and compiling vendor responses...",
-            "Preparing comparison analysis with evaluation criteria..."
+          thoughts: [
+            "Processing RFQ details...",
+            "Generating quotation requests...",
+            "Contacting vendor database..."
           ],
-          timingMs: 3500
+          timingMs: 1500
         },
         {
           type: "text" as const,
@@ -324,16 +316,12 @@ export const procurementRfqData = {
       content: [
         {
           type: "thinking" as const,
-          thought: "Generating Approval of Requirement document...",
-          reasoning: [
-            "Analyzing user's decision to proceed with Vendor A...",
-            "Compiling all RFQ and quotation data for AOR document...",
-            "Preparing procurement justification and business case...",
-            "Calculating budget allocation and cost savings analysis...",
-            "Generating approval workflow with stakeholder requirements...",
-            "Formatting document to government procurement standards..."
+          thoughts: [
+            "Preparing AOR document...",
+            "Compiling procurement justification...",
+            "Generating approval workflow..."
           ],
-          timingMs: 3500
+          timingMs: 1500
         },
         {
           type: "text" as const,
@@ -491,7 +479,7 @@ export const procurementRfqData = {
             </div>
             <div>
               <p class="font-medium text-sm">Requestor</p>
-              <p class="text-xs text-gray-600">John Doe - Product Manager</p>
+              <p class="text-xs text-gray-600">Jayden Tan - Marketing Officer</p>
             </div>
           </div>
           <span class="text-xs text-emerald-700 font-medium">Submitted</span>
