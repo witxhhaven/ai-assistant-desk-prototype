@@ -1,4 +1,5 @@
-import { FolderOpen, FileText, Bot, Rocket, Gift, File, Upload, Plus } from 'lucide-react';
+import { FolderOpen, PanelLeft, FileText, Bot, Rocket, Gift, File, Upload, Plus } from 'lucide-react';
+import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import type { ColorTheme, FontStyle } from './PersonalizationDialog';
@@ -56,11 +57,12 @@ const libraries: Library[] = [
 ];
 
 interface LibraryPageProps {
+  onToggleSidebar: () => void;
   colorTheme: ColorTheme;
   fontStyle: FontStyle;
 }
 
-export function LibraryPage({ colorTheme, fontStyle }: LibraryPageProps) {
+export function LibraryPage({ onToggleSidebar, colorTheme, fontStyle }: LibraryPageProps) {
   const theme = getThemeClasses(colorTheme);
   const font = getFontClasses(fontStyle);
   
@@ -137,6 +139,13 @@ export function LibraryPage({ colorTheme, fontStyle }: LibraryPageProps) {
     <div className={`flex-1 flex flex-col bg-gray-100 ${font.base}`}>
       {/* Header */}
       <div className="flex items-center gap-2 p-4 bg-gray-100">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onToggleSidebar}
+        >
+          <PanelLeft className="w-5 h-5" />
+        </Button>
         <h1 className="font-semibold text-gray-900" style={{ fontSize: '18px' }}>Library</h1>
       </div>
 
