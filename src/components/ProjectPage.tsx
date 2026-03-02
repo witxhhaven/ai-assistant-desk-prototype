@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Folder as ProjectIcon, MessageSquare, MoreHorizontal, Trash2, SquarePen, Settings, Upload, FileText, X } from 'lucide-react';
+import { ArrowLeft, Folder as ProjectIcon, MessageSquare, MoreHorizontal, Trash2, SquarePen, Settings, Upload, FileText, X, Lightbulb } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -141,7 +141,8 @@ export function ProjectPage({
           <div className="max-w-3xl mx-auto space-y-4">
             {/* Project isolation info */}
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 flex items-start gap-2">
+                <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 Chats within this project will only reference files, custom instructions, and memories from within this project.
               </p>
             </div>

@@ -522,7 +522,7 @@ export function ChatSidebar({
                                 >
                                   <div className="flex-1 flex flex-col gap-0.5 min-w-0">
                                     <span className="truncate text-gray-900">{displayTitle}</span>
-                                    <span className="text-xs text-gray-500 truncate">{meta.assistantName || 'My AI Assistant'}</span>
+                                    <span className="text-xs text-gray-500 truncate">{meta.assistantName || 'My Personal Assistant'}</span>
                                   </div>
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
@@ -598,7 +598,7 @@ export function ChatSidebar({
                                         {displayTitle}
                                       </span>
                                       <span className="text-xs text-gray-500 truncate">
-                                        {chat.assistantName || 'My AI Assistant'}
+                                        {chat.assistantName || 'My Personal Assistant'}
                                       </span>
                                     </div>
                                   )}

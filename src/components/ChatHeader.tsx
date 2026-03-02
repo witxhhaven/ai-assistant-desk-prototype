@@ -110,7 +110,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   const subtitle = isInteractive
     ? (assistantName
         ? assistantName
-        : (!isNewChat ? 'My AI Assistant' : null))
+        : (!isNewChat ? 'My Personal Assistant' : null))
     : (assistantName || null);
 
   const classificationLabel = classificationType === 'cce-sn'
