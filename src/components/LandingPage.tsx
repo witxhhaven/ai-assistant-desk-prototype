@@ -57,7 +57,7 @@ const toolItems = [
   {
     icon: Shield,
     title: 'Secure by Default',
-    description: 'Built for government. Your data stays within the approved boundary up to Restricted / Sensitive.',
+    description: 'Built for government. Your data stays within the approved boundary up to Restricted / Sensitive Normal.',
   },
 ];
 
