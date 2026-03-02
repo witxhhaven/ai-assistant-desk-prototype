@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChatSidebar } from './components/ChatSidebar';
 import { ExplorePage } from './components/ExplorePage';
 import { StudioPage } from './components/StudioPage';
@@ -144,6 +144,8 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(isDirectChat);
   const [hasSelectedAccount, setHasSelectedAccount] = useState(isDirectChat);
   const [hasOnboarded, setHasOnboarded] = useState(isDirectChat);
+  const chatNavigationSourceRef = useRef<string | null>(null);
+  const isAuthenticatedRef = useRef(isAuthenticated);
 
   // Simple hash-based routing
   useEffect(() => {
@@ -162,6 +164,8 @@ export default function App() {
       window.history.replaceState({ page: 'landing' }, '');
     }
     const handlePopState = (e: PopStateEvent) => {
+      // Don't navigate back to landing if already authenticated
+      if (isAuthenticatedRef.current) return;
       if (e.state?.page === 'landing') {
         setHasSeenLanding(false);
       }
@@ -239,6 +243,11 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Keep auth ref in sync
+  useEffect(() => {
+    isAuthenticatedRef.current = isAuthenticated;
+  }, [isAuthenticated]);
+
   // Handle browser back button to return to login
   useEffect(() => {
     if (isAuthenticated && !isDirectChat) {
@@ -248,10 +257,18 @@ export default function App() {
 
     const handlePopState = () => {
       if (isDirectChat) return;
-      // When browser back is pressed, sign out
-      setIsAuthenticated(false);
-      setHasSelectedAccount(false);
-      setHasOnboarded(false);
+
+      // If navigated from explore/home to assistant chat, go back to source view
+      if (chatNavigationSourceRef.current) {
+        const sourceView = chatNavigationSourceRef.current;
+        chatNavigationSourceRef.current = null;
+        setActiveView(sourceView as any);
+        setPreviewChat(null);
+        return;
+      }
+
+      // Stay on the main app — re-push history state to prevent sign out
+      window.history.pushState({ authenticated: true }, '');
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -667,6 +684,10 @@ export default function App() {
   };
 
   const handleStartAssistantChat = (assistantName: string, assistantType: string) => {
+    // Push history state so browser back returns to explore
+    chatNavigationSourceRef.current = activeView;
+    window.history.pushState({ page: 'assistant-chat' }, '');
+
     const simulationId = assistantSimulationMap[assistantType];
     if (simulationId) {
       // Create a new unique instance of this simulation
@@ -955,6 +976,10 @@ export default function App() {
   };
 
   const handleStartNewChatInProject = (projectId: string) => {
+    // Push history state so browser back returns to project page
+    chatNavigationSourceRef.current = activeView;
+    window.history.pushState({ page: 'project-chat' }, '');
+
     const newId = Date.now().toString();
     const newChat: Chat = {
       id: newId,
