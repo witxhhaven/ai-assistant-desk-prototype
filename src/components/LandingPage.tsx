@@ -83,6 +83,10 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolledPastHero(window.scrollY > 100);
     };
