@@ -217,6 +217,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
   const [interactiveDisplayedMessages, setInteractiveDisplayedMessages] = useState<any[]>([]);
   const [isProcessingRichResponse, setIsProcessingRichResponse] = useState(false);
   const [awaitingDecision, setAwaitingDecision] = useState(false);
+  const [simulationEnded, setSimulationEnded] = useState(false);
   const richResponseAbortRef = useRef(false);
   const simulatorPendingResponsesRef = useRef<any[]>([]); // Remaining bot responses after a decision pause in simulator mode
 
@@ -352,6 +353,9 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
   // Track whether we've already fired the first user message callback
   const hasFiredFirstUserMessage = useRef(false);
 
+  // Whether this simulation allows free-form user input (user types anything to trigger next response)
+  const isFreeInput = data?.id === 'leave-apply-simulation';
+
   // Handle message send from MessageInput (simulator only)
   const handleSendMessage = (text: string) => {
     if (!data) return;
@@ -360,7 +364,13 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
     const currentMsg = data.messages[currentMessageIndex];
     if (currentMsg.role !== 'user') return;
 
-    const targetText = (currentMsg.content as UserMessage).text;
+    const scriptedText = (currentMsg.content as UserMessage).text;
+    // For free-input simulations, use what the user actually typed
+    const displayText = isFreeInput ? (text.trim() || scriptedText) : scriptedText;
+
+    if (isFreeInput) {
+      console.log(`[Simulator] User typed: "${text}" (scripted: "${scriptedText}")`);
+    }
 
     if (!hasFiredFirstUserMessage.current) {
       hasFiredFirstUserMessage.current = true;
@@ -369,7 +379,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
 
     shouldScrollToBottom.current = true;
     setIsTyping(false);
-    setDisplayedMessages(prev => [...prev, { role: 'user', text: targetText }]);
+    setDisplayedMessages(prev => [...prev, { role: 'user', text: displayText }]);
     setTypedText("");
     setCurrentMessageIndex(prev => prev + 1);
   };
@@ -639,6 +649,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
         content: "Leave application cancelled. Let me know if you'd like to apply for leave on different dates or if there's anything else I can help with.",
       }]);
       simulatorPendingResponsesRef.current = [];
+      if (isFreeInput) setSimulationEnded(true);
       return;
     }
 
@@ -1252,7 +1263,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
                 onSend={handleSendMessage}
                 value={typedText}
                 onChange={setTypedText}
-                autoTypeText={getCurrentTargetText()}
+                autoTypeText={isFreeInput ? undefined : getCurrentTargetText()}
                 disabled={!isTyping}
                 assistantType={assistantType || (data?.assistantName ? 'custom' : undefined)}
                 onNavigateToExplore={onNavigateToExplore}
