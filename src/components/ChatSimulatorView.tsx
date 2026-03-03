@@ -207,6 +207,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
   const chatEndRef = useRef<HTMLDivElement>(null);
   const rightPanelRef = useRef<ImperativePanelHandle>(null);
   const outputContentRef = useRef<HTMLDivElement>(null);
+  const panelGroupRef = useRef<HTMLDivElement>(null);
   const shouldScrollToBottom = useRef(false);
   const lastUserMessageRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -238,7 +239,10 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
     const panel = rightPanelRef.current;
     if (!panel) return;
     if (showOutputPanel) {
-      panel.expand();
+      // Open canvas at 450px width
+      const groupWidth = panelGroupRef.current?.getBoundingClientRect().width || 1000;
+      const targetPercent = (450 / groupWidth) * 100;
+      panel.resize(Math.min(targetPercent, 50));
       // Fade in content after panel expand animation (200ms)
       const timer = setTimeout(() => setPanelContentVisible(true), 220);
       return () => clearTimeout(timer);
@@ -795,6 +799,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
   };
 
   return (
+    <div ref={panelGroupRef} className="h-full">
     <ResizablePanelGroup direction="horizontal" className="h-full bg-gray-50">
       {/* Chat Area */}
       <ResizablePanel defaultSize={100} minSize={30}>
@@ -1252,7 +1257,7 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
                   onSendMessage?.(message);
                 }}
                 autoFocus={true}
-                bookmarkedAssistants={favoritedAssistants}
+                toolAssistants={toolAssistants}
                 assistantType={assistantType}
                 disabled={isProcessingRichResponse || awaitingDecision}
                 onNavigateToExplore={onNavigateToExplore}
@@ -1442,5 +1447,6 @@ export const ChatSimulatorView: React.FC<ChatSimulatorProps> = ({
             </div>
       </ResizablePanel>
     </ResizablePanelGroup>
+    </div>
   );
 };
